@@ -143,7 +143,7 @@ class DaikinSkyport(object):
             return self.thermostats
         else:
             self.authenticated = False
-            logger.debug("Error connecting to Daikin Skyport while attempting to get "
+            logger.warn("Error connecting to Daikin Skyport while attempting to get "
                         "thermostat data.  Refreshing tokens and trying again.")
             if self.refresh_tokens():
                 return self.get_thermostats()
@@ -165,7 +165,7 @@ class DaikinSkyport(object):
             return request.json()
         else:
             self.authenticated = False
-            logger.debug("Error connecting to Daikin Skyport while attempting to get "
+            logger.warn("Error connecting to Daikin Skyport while attempting to get "
                         "thermostat data.  Refreshing tokens and trying again.")
             if self.refresh_tokens():
                 return self.get_thermostat_info(deviceid)
