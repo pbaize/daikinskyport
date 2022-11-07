@@ -116,7 +116,7 @@ class DaikinSkyport(object):
         else:
             self.request_tokens()
 
-    def get_thermostats(self):
+    def get_thermostats(self, retry=True):
         ''' Set self.thermostats to a json list of thermostats from daikinskyport.com '''
         url = 'https://api.daikinskyport.com/devices'
         header = {'Content-Type': 'application/json;charset=UTF-8',
@@ -145,12 +145,12 @@ class DaikinSkyport(object):
             self.authenticated = False
             logger.warn("Error connecting to Daikin Skyport while attempting to get "
                         "thermostat data.  Refreshing tokens and trying again.")
-            if self.refresh_tokens():
-                return self.get_thermostats()
+            if retry and self.refresh_tokens():
+                return self.get_thermostats(False)
             else:
                 return None
 
-    def get_thermostat_info(self, deviceid):
+    def get_thermostat_info(self, deviceid, retry=True):
         ''' Retrieve the device info for the specific device '''
         url = 'https://api.daikinskyport.com/deviceData/' + deviceid
         header = {'Content-Type': 'application/json;charset=UTF-8',
@@ -167,8 +167,8 @@ class DaikinSkyport(object):
             self.authenticated = False
             logger.warn("Error connecting to Daikin Skyport while attempting to get "
                         "thermostat data.  Refreshing tokens and trying again.")
-            if self.refresh_tokens():
-                return self.get_thermostat_info(deviceid)
+            if retry and self.refresh_tokens():
+                return self.get_thermostat_info(deviceid, False)
             else:
                 return None
 
